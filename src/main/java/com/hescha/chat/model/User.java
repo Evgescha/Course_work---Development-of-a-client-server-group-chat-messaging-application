@@ -1,6 +1,7 @@
 package com.hescha.chat.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class User extends AbstractEntity {
     private String email;
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER)

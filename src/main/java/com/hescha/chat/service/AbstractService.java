@@ -10,27 +10,27 @@ import java.util.Optional;
 public abstract class AbstractService<E> {
     private final JpaRepository<E, Long> repository;
 
-    void create(E entity) {
+    public void create(E entity) {
         repository.saveAndFlush(entity);
     }
 
-    List<E> read() {
+    public List<E> read() {
         return repository.findAll();
     }
 
-    Optional<E> findById(int id) {
+    public Optional<E> findById(int id) {
         return repository.findById((long) id);
     }
 
-    void update(E entity) {
+    public void update(E entity) {
         repository.saveAndFlush(entity);
     }
 
-    void delete(E entity) {
+    public void delete(E entity) {
         repository.delete(entity);
     }
 
-    void delete(int id) {
+    public void delete(int id) {
         repository.deleteById((long) id);
     }
 }
