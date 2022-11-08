@@ -22,16 +22,20 @@
     <div class="messages">
         <div class="row messageItem" th:each="message:${entity.messages}">
             <div class="hidden id" th:text="${message.id}"></div>
-            <div class="col-2"><img th:src="'/img/avatars/'+${message.owner.avatar} + '.jpg'"></div>
-            <div class="col-10" th:text="${message.text}"></div>
-            <div class="dateCreation" th:text="${message.dateCreation}"></div>
+            <div class="col-2 messageAvatar">
+                <img th:src="'/img/avatars/'+${message.owner.avatar} + '.jpg'">
+                <div class="messageOwner" th:text="${message.owner.username}"></div>
+            </div>
+            <div class="col-10">
+                <div class="dateCreation" th:text="${message.dateCreation}"></div>
+                <div th:text="${message.text}"></div>
+            </div>
         </div>
     </div>
 
     <div>
         <textarea rows="3" placeholder="Write message here.." class="message"></textarea>
         <input type="button" value="Submit" onclick="ajaxPOST()">
-        <input type="button" value="AJAX GET" onclick="ajaxGET()">
     </div>
 </div>
 
