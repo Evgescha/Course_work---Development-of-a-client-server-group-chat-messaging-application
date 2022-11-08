@@ -1,0 +1,35 @@
+body {
+  background-image: url("/img/background.png");
+  background-color: #2fff6552!IMPORTANT;
+}
+
+ul{
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    display: flex;
+    font-size: 22px;
+    margin: 20px 0;
+    padding: 10px 0;
+    background: white;
+    text-decoration: none;
+}
+
+ul li{
+  display: inline;
+  padding: 5px 10px;
+}
+
+ul li:hover{
+  background-color: #dddddd;
+}
+
+.MenuItem.compact {
+    margin: 0.125rem 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    width: auto;
+    font-weight: 500;
+    transform: scale(1);
+    transition: .15s ease-in-out transform;
+}

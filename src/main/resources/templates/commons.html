@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:fragment="head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="/css/style.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    </meta>
+</head>
+
+<body>
+
+<div class="container" th:fragment="nav">
+    <div class="row-md-8">
+        <div class="col-md-12">
+            <div class="nav">
+                <ul>
+                    <li><a class="MenuItem compact" href="/chats">All chats</a></li>
+                    <li><a class="MenuItem compact" href="/chats/my">My chats</a></li>
+                    <li><a class="MenuItem compact" href="/chats/new">New chat</a></li>
+                    <li><a class="MenuItem compact" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
