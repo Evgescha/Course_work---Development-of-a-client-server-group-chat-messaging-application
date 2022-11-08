@@ -32,8 +32,9 @@ public class ChatController {
     @GetMapping
     public String getChats(Model model) {
         model.addAttribute("pageName", "All chats");
-        model.addAttribute("list", chatService.read());
-        return "index.html";
+        List<Chat> chatList = chatService.read();
+        model.addAttribute("list", chatList);
+        return "chats.html";
     }
 
     @GetMapping("/my")
@@ -77,8 +78,11 @@ public class ChatController {
     @PostMapping
     public String saveOrUpdateChat(@ModelAttribute @NonNull Chat chat,
                                    @RequestParam @NonNull Integer avatars,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes,
+                                   Principal principal) {
+
         Chat current = null;
+        User user = userService.findByUsername(principal.getName()).get();
         Optional<Chat> byName = chatService.findByName(chat.getName());
         chat.setAvatar(ChatAvatar.findByNumber(avatars));
 
@@ -88,13 +92,15 @@ public class ChatController {
             return "chatEdit.html";
         } else {
             current = chatService.update(chat);
+            user.getChats().add(current);
+            userService.update(user);
         }
 
         return "redirect:/chats/" + current.getId();
     }
 
     @PostMapping("/messages")
-    public ResponseEntity<Void> saveOrUpdateChat(@RequestParam Long chat,
+    public ResponseEntity<Void> postMessage(@RequestParam Long chat,
                                  @RequestParam String text,
                                  Principal principal) {
         User user = userService.findByUsername(principal.getName()).get();
@@ -104,13 +110,18 @@ public class ChatController {
         message.setOwner(user);
         message.setText(text);
 
-        messageService.create(message);
+        Message message1 = messageService.create(message);
+
+        chat1.getMessages().add(message1);
+        Chat update = chatService.update(chat1);
+        user.getChats().add(update);
+        userService.update(user);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/messages")
-    public ResponseEntity<List<Message>> saveOrUpdateChat(@RequestParam Long chat,
+    public ResponseEntity<List<Message>> getNewMessage(@RequestParam Long chat,
                                           @RequestParam Long message) {
         Chat chat1 = chatService.findById(chat.intValue()).get();
         List<Message> newMessages = messageService.getNewMessages(chat1, message);

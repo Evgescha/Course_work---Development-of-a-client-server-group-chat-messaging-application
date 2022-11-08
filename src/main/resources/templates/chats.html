@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chats page</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+
+<div class="container">
+    <div class="row-md-8">
+        <div class="col-md-12">
+            <div class="pagename" th:text="'Now You on page: ' + ${pageName}">Now You on page: Default</div>
+        </div>
+    </div>
+    <div class="chats">
+        <div class="row chats">
+            <a th:href="'/chats/' +${chat.id}" class="col-3 chatItem" th:each="chat:${list}">
+                <div class="hidden id" th:text="${chat.id}">-1</div>
+                <img th:src="'/img/avatars/'+${chat.avatar} + '.jpg'">
+                <div class="chatName" th:text="${chat.name}">Babadun</div>
+                <div class="" th:text="${#lists.size(chat.users)} + ' user(s)'"></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

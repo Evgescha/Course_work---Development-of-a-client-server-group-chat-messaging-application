@@ -4,10 +4,7 @@ import com.hescha.chat.domen.ChatAvatar;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -18,7 +15,7 @@ public class Chat extends AbstractEntity {
 
     private ChatAvatar avatar = ChatAvatar.A1;
 
-    @ManyToMany(mappedBy = "chats", cascade = CascadeType.DETACH)
+    @ManyToMany(mappedBy = "chats", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
@@ -30,5 +27,22 @@ public class Chat extends AbstractEntity {
                 "name='" + name + '\'' +
                 ", avatar=" + avatar +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Chat chat = (Chat) o;
+        return Objects.equals(name, chat.name)
+                && avatar == chat.avatar
+                && Objects.equals(users, chat.users)
+                && Objects.equals(messages, chat.messages);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, avatar, users, messages);
     }
 }

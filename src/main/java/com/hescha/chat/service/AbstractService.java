@@ -3,6 +3,7 @@ package com.hescha.chat.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public abstract class AbstractService<E> {
         return repository.findById((long) id);
     }
 
+    @Transactional
     public E update(E entity) {
         return repository.saveAndFlush(entity);
     }

@@ -97,6 +97,7 @@ textarea {
     display: inline-block;
     overflow-x: auto;
     padding: 20px;
+    width: 100%;
  }
  .messageAvatar{
     align-items: center;
@@ -106,4 +107,10 @@ textarea {
   }
 .hidden{
     display: none;
+}
+.chats{
+    background: white;
+}
+.chatItem{
+    text-align: center;
 }

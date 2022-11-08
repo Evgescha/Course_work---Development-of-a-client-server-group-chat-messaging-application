@@ -50,6 +50,7 @@
 /*]]>*/
 
 
+
 </script>
 
 <script>
@@ -77,6 +78,7 @@ function ajaxPOST () {
 
 
 
+
 </script>
 
 
@@ -86,10 +88,10 @@ function ajaxGET () {
   var nodes = document.querySelectorAll('.messageItem > .hidden');
   var last = nodes[nodes.length- 1];
   if(!last){
-    return;
-  }
+    message = 0;
+  }else{
   message = last.textContent;
-
+}
   data.append("chat", chatId);
   data.append("message", message);
   var url = "/chats/messages?" + data.toString();
@@ -102,11 +104,17 @@ function ajaxGET () {
     var newMessage = '';
     for(let i=0; i<answer.length; i++){
         const msg=answer[i];
-        newMessage = newMessage + `<div class="row messageItem">
+        newMessage = newMessage +
+        `<div class="row messageItem">
             <div class="hidden id">`+msg['id']+`</div>
-            <div class="col-2"><img src="/img/avatars/`+msg['owner']['avatar'].replace('A','') + `.jpg"></div>
-            <div class="col-10">`+msg['text']+`</div>
-            <div class="dateCreation">`+msg['dateCreation']+`</div>
+            <div class="col-2 messageAvatar">
+                <img src="/img/avatars/`+msg['owner']['avatar'].replace('A','') + `.jpg">
+                <div class="messageOwner">`+msg['owner']['username']+`</div>
+            </div>
+            <div class="col-10">
+                <div class="dateCreation">`+msg['dateCreation']+`</div>
+                <div>`+msg['text']+`</div>
+            </div>
         </div>`;
     }
 
@@ -117,6 +125,7 @@ function ajaxGET () {
   setTimeout(ajaxGET, 3000);
 }
 ajaxGET();
+
 </script>
 
 </body>
