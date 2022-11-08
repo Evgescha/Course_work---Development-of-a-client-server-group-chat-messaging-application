@@ -26,7 +26,7 @@ public class User extends AbstractEntity {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birthDate;
 
-    private UserAvatar userAvatar = UserAvatar.A1;
+    private UserAvatar avatar = UserAvatar.A1;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_chat",

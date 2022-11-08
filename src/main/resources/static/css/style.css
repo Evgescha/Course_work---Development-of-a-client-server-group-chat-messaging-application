@@ -3,6 +3,10 @@ body {
   background-color: #2fff6552!IMPORTANT;
 }
 
+.container{
+    padding: 20px 0;
+}
+
 ul{
     flex-direction: row;
     width: 100%;
@@ -40,4 +44,29 @@ ul li:hover{
     width: auto;
     font-weight: 500;
     background: white;
+}
+
+.profileImage{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 40px;
+}
+
+footer{
+    margin: 20px;
+}
+
+.profile{
+  background: white;
+}
+.profile form{
+    width: 97%;
+    margin: 0 auto;
+}
+
+fieldset{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
 }

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+<div th:replace="~{commons :: pagename}"></div>
+
+<div th:if="#{message!=null}" th:text="${message}" style="text-align: center">Message here</div>
+<br>
+
+<div class="container profile">
+
+    <div class="profileImage">
+        <img th:src="'/img/avatars/' + ${entity.avatar} + '.jpg'">
+        <div th:text="${entity.username} + '\'s profile'"></div>
+    </div>
+
+    <form class="form-signin" method="post" action="/profile">
+        <p>
+        <fieldset>
+            <legend>Select avatar:</legend>
+            <div>
+                <input type="radio" id="A1" name="avatars" value="1" required>
+                <label for="A1"><img src="/img/avatars/1.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A2" name="avatars" value="2">
+                <label for="A2"><img src="/img/avatars/2.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A3" name="avatars" value="3">
+                <label for="A3"><img src="/img/avatars/3.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A4" name="avatars" value="4">
+                <label for="A4"><img src="/img/avatars/4.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A5" name="avatars" value="5">
+                <label for="A5"><img src="/img/avatars/5.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A6" name="avatars" value="6">
+                <label for="A6"><img src="/img/avatars/6.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A7" name="avatars" value="7">
+                <label for="A7"><img src="/img/avatars/7.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A8" name="avatars" value="8">
+                <label for="A8"><img src="/img/avatars/8.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A9" name="avatars" value="9">
+                <label for="A9"><img src="/img/avatars/9.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A10" name="avatars" value="10">
+                <label for="A10"><img src="/img/avatars/10.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A11" name="avatars" value="11">
+                <label for="A11"><img src="/img/avatars/11.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A12" name="avatars" value="12">
+                <label for="A12"><img src="/img/avatars/12.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A13" name="avatars" value="13">
+                <label for="A13"><img src="/img/avatars/13.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A14" name="avatars" value="14">
+                <label for="A14"><img src="/img/avatars/14.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A15" name="avatars" value="15">
+                <label for="A15"><img src="/img/avatars/15.jpg"></label>
+            </div>
+        </fieldset>
+
+        </p>
+        <p>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text"
+                   th:value="${entity.username}"
+                   id="username"
+                   name="username"
+                   class="form-control"
+                   placeholder="Username"
+                   required>
+        </p>
+        <p>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   class="form-control"
+                   placeholder="Password"
+                   required>
+        </p>
+        <p>
+            <label for="email" class="sr-only">Email</label>
+            <input type="email"
+                   th:value="${entity.email}"
+                   id="email"
+                   name="email"
+                   class="form-control"
+                   placeholder="Email"
+                   required>
+        </p>
+        <p>
+            <label for="birthDate" class="sr-only">Birthdate</label>
+            <input type="date"
+                   th:value="${entity.birthDate}"
+                   id="birthDate"
+                   name="birthDate"
+                   class="form-control"
+                   placeholder="Birth date"
+                   required>
+        </p>
+        <input hidden name="id" th:value="${entity.id}">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+    </form>
+</div>
+
+<footer></footer>
+
+</body>
+</html>
