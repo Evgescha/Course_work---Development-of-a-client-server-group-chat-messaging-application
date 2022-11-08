@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+<div th:replace="~{commons :: pagename}"></div>
+
+<div th:if="#{message!=null}" th:text="${message}" style="text-align: center">Message here</div>
+<br>
+
+<div class="container profile">
+    <div class="profileImage">
+        <div >Current avatar</div>
+        <img th:src="'/img/avatars/' + ${entity.avatar} + '.jpg'">
+    </div>
+
+    <form class="form-signin" method="post" action="/chats">
+        <p>
+        <fieldset>
+            <legend>Select avatar for this chat:</legend>
+            <div>
+                <input type="radio" id="A16" name="avatars" value="16" required>
+                <label for="A16"><img src="/img/avatars/16.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A17" name="avatars" value="17">
+                <label for="A17"><img src="/img/avatars/17.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A18" name="avatars" value="18">
+                <label for="A18"><img src="/img/avatars/18.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A19" name="avatars" value="19">
+                <label for="A19"><img src="/img/avatars/19.jpg"></label>
+            </div>
+            <div>
+                <input type="radio" id="A20" name="avatars" value="20">
+                <label for="A20"><img src="/img/avatars/20.jpg"></label>
+            </div>
+        </fieldset>
+
+        </p>
+        <p>
+            <label for="name" class="sr-only">Chat name</label>
+            <input type="text"
+                   th:value="${entity.name}"
+                   id="name"
+                   name="name"
+                   class="form-control"
+                   placeholder="Name"
+                   required>
+        </p>
+        <input hidden name="id" th:value="${entity.id}">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create / Update</button>
+    </form>
+</div>
+
+<footer></footer>
+
+</body>
+</html>

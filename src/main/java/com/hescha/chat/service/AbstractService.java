@@ -22,8 +22,8 @@ public abstract class AbstractService<E> {
         return repository.findById((long) id);
     }
 
-    public void update(E entity) {
-        repository.saveAndFlush(entity);
+    public E update(E entity) {
+        return repository.saveAndFlush(entity);
     }
 
     public void delete(E entity) {
