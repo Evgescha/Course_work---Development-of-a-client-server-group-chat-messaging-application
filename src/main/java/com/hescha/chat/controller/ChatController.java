@@ -3,11 +3,14 @@ package com.hescha.chat.controller;
 import com.hescha.chat.domen.ChatAvatar;
 import com.hescha.chat.domen.UserAvatar;
 import com.hescha.chat.model.Chat;
+import com.hescha.chat.model.Message;
 import com.hescha.chat.model.User;
 import com.hescha.chat.service.ChatService;
+import com.hescha.chat.service.MessageService;
 import com.hescha.chat.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +26,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final MessageService messageService;
+    private final UserService userService;
 
     @GetMapping
     public String getChats(Model model) {
@@ -57,7 +63,7 @@ public class ChatController {
 
     @GetMapping("/{id}/edit")
     public String editChat(@PathVariable @NonNull Long id,
-                          Model model) {
+                           Model model) {
         Optional<Chat> byId = chatService.findById(id.intValue());
         if (byId.isEmpty()) {
             model.addAttribute("message", "Chat with id " + id + " does not found");
@@ -85,5 +91,29 @@ public class ChatController {
         }
 
         return "redirect:/chats/" + current.getId();
+    }
+
+    @PostMapping("/messages")
+    public ResponseEntity<Void> saveOrUpdateChat(@RequestParam Long chat,
+                                 @RequestParam String text,
+                                 Principal principal) {
+        User user = userService.findByUsername(principal.getName()).get();
+        Chat chat1 = chatService.findById(chat.intValue()).get();
+        Message message = new Message();
+        message.setChat(chat1);
+        message.setOwner(user);
+        message.setText(text);
+
+        messageService.create(message);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> saveOrUpdateChat(@RequestParam Long chat,
+                                          @RequestParam Long message) {
+        Chat chat1 = chatService.findById(chat.intValue()).get();
+        List<Message> newMessages = messageService.getNewMessages(chat1, message);
+        return ResponseEntity.ok(newMessages);
     }
 }

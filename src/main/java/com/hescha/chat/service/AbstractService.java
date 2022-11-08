@@ -10,8 +10,8 @@ import java.util.Optional;
 public abstract class AbstractService<E> {
     private final JpaRepository<E, Long> repository;
 
-    public void create(E entity) {
-        repository.saveAndFlush(entity);
+    public E create(E entity) {
+        return repository.saveAndFlush(entity);
     }
 
     public List<E> read() {

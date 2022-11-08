@@ -48,9 +48,10 @@ ul li:hover{
 
 .profileImage{
     display: flex;
-    justify-content: space-around;
     align-items: center;
     font-size: 40px;
+    margin: 10px;
+    justify-content: center;
 }
 
 footer{
@@ -69,4 +70,23 @@ fieldset{
     display: flex;
     width: 100%;
     flex-wrap: wrap;
+}
+
+img {
+    border-radius: 100px;
+    width: 80px;
+    height: 80px;
+}
+
+textarea {
+    width: 100%;
+    margin: 10px;
+}
+
+.dateCreation{
+
+}
+
+.hidden{
+    display: none;
 }

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +28,11 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
     }
 
     @Override
-    public void create(User entity) {
+    public User create(User entity) {
         String encode = passwordEncoder.encode(entity.getPassword());
         entity.setPassword(encode);
         super.create(entity);
+        return null;
     }
 
     @Override

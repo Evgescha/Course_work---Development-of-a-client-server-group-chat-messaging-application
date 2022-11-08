@@ -23,4 +23,12 @@ public class Chat extends AbstractEntity {
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messages = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "name='" + name + '\'' +
+                ", avatar=" + avatar +
+                '}';
+    }
 }

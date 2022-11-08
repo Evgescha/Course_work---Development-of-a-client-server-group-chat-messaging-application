@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${entity.name}">Chat page</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+
+<div th:if="#{message!=null}" th:text="${message}" style="text-align: center">Message here</div>
+<br>
+
+<div class="container profile">
+    <div class="row profileImage">
+        <img th:src="'/img/avatars/' + ${entity.avatar} + '.jpg'">
+        <div th:text="${entity.name}">Chat name</div>
+    </div>
+
+    <div class="messages">
+        <div class="row messageItem" th:each="message:${entity.messages}">
+            <div class="hidden id" th:text="${message.id}"></div>
+            <div class="col-2"><img th:src="'/img/avatars/'+${message.owner.avatar} + '.jpg'"></div>
+            <div class="col-10" th:text="${message.text}"></div>
+            <div class="dateCreation" th:text="${message.dateCreation}"></div>
+        </div>
+    </div>
+
+    <div>
+        <textarea rows="3" placeholder="Write message here.." class="message"></textarea>
+        <input type="button" value="Submit" onclick="ajaxPOST()">
+        <input type="button" value="AJAX GET" onclick="ajaxGET()">
+    </div>
+</div>
+
+<footer></footer>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    var chatId = /*[[${entity.id}]]*/ 'default';
+    console.log("chat id is " + chatId + ".");
+
+/*]]>*/
+
+
+</script>
+
+<script>
+function ajaxPOST () {
+  // (A1) DATA
+  var data = new FormData();
+  const message = document.querySelector('textarea').value;
+  if(!message){
+    alert("Please write a message first.");
+    return;
+  }
+
+  data.append("text", message);
+  data.append("chat", chatId);
+
+  // (A2) AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/chats/messages");
+  xhr.onload = function () {
+    console.log(this.response);
+  };
+  xhr.send(data);
+  document.querySelector('textarea').value = "";
+}
+
+
+
+</script>
+
+
+<script>
+function ajaxGET () {
+  var data = new URLSearchParams();
+  var nodes = document.querySelectorAll('.messageItem > .hidden');
+  var last = nodes[nodes.length- 1];
+  if(!last){
+    return;
+  }
+  message = last.textContent;
+
+  data.append("chat", chatId);
+  data.append("message", message);
+  var url = "/chats/messages?" + data.toString();
+
+  // (B2) AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url);
+  xhr.onload = function () {
+    const answer = JSON.parse(this.response);
+    var newMessage = '';
+    for(let i=0; i<answer.length; i++){
+        const msg=answer[i];
+        newMessage = newMessage + `<div class="row messageItem">
+            <div class="hidden id">`+msg['id']+`</div>
+            <div class="col-2"><img src="/img/avatars/`+msg['owner']['avatar'].replace('A','') + `.jpg"></div>
+            <div class="col-10">`+msg['text']+`</div>
+            <div class="dateCreation">`+msg['dateCreation']+`</div>
+        </div>`;
+    }
+
+    const messages = document.querySelector(".messages");
+    messages.insertAdjacentHTML("beforeend", newMessage);
+  };
+  xhr.send();
+  setTimeout(ajaxGET, 3000);
+}
+ajaxGET();
+</script>
+
+</body>
+</html>
