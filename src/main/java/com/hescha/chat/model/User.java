@@ -1,5 +1,6 @@
 package com.hescha.chat.model;
 
+import com.hescha.chat.domen.UserAvatar;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,6 +25,8 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birthDate;
+
+    private UserAvatar userAvatar = UserAvatar.A1;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_chat",
