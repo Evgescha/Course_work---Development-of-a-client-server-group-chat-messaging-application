@@ -15,6 +15,10 @@ public class Chat extends AbstractEntity {
 
     private ChatAvatar avatar = ChatAvatar.A1;
 
+    @JoinColumn(name = "user_id")
+    @ManyToOne(targetEntity = User.class)
+    private User owner;
+
     @ManyToMany(mappedBy = "chats", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<User> users = new HashSet<>();
 

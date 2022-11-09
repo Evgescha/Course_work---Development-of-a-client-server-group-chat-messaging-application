@@ -114,3 +114,7 @@ textarea {
 .chatItem{
     text-align: center;
 }
+.displayTextCenter{
+    display: flex;
+    justify-content: center;
+}

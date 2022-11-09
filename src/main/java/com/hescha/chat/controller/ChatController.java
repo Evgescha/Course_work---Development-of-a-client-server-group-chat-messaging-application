@@ -1,7 +1,6 @@
 package com.hescha.chat.controller;
 
 import com.hescha.chat.domen.ChatAvatar;
-import com.hescha.chat.domen.UserAvatar;
 import com.hescha.chat.model.Chat;
 import com.hescha.chat.model.Message;
 import com.hescha.chat.model.User;
@@ -11,7 +10,6 @@ import com.hescha.chat.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -38,9 +37,16 @@ public class ChatController {
     }
 
     @GetMapping("/my")
-    public String getMyChats(Model model) {
+    public String getMyChats(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName()).get();
         model.addAttribute("pageName", "My chats");
-        return "index.html";
+
+        List<Chat> whereOwner = chatService.findByOwner(user);
+        List<Chat> whereIn = chatService.findByUsersContains(user);
+
+        model.addAttribute("ownerList", whereOwner);
+        model.addAttribute("myList", whereIn);
+        return "myChats.html";
     }
 
     @GetMapping("/new")
@@ -56,6 +62,7 @@ public class ChatController {
         Optional<Chat> byId = chatService.findById(id.intValue());
         if (byId.isEmpty()) {
             model.addAttribute("message", "Chat with id " + id + " does not found");
+            return "index.html";
         }
 
         model.addAttribute("entity", byId.get());
@@ -68,11 +75,33 @@ public class ChatController {
         Optional<Chat> byId = chatService.findById(id.intValue());
         if (byId.isEmpty()) {
             model.addAttribute("message", "Chat with id " + id + " does not found");
-            return "chat.html";
+            return "index.html";
         }
 
         model.addAttribute("entity", byId.get());
         return "chatEdit.html";
+    }
+
+
+    @GetMapping("/{id}/delete")
+    public String deleteChat(@PathVariable @NonNull Long id,
+                           Principal principal,
+                             Model model) {
+        Optional<Chat> byId = chatService.findById(id.intValue());
+        if (byId.isEmpty()) {
+            model.addAttribute("message", "Chat with id " + id + " does not found");
+            return "index.html";
+        }
+
+        User user = userService.findByUsername(principal.getName()).get();
+        Chat chat = byId.get();
+        if(!Objects.equals(user.getId(), chat.getOwner().getId())){
+            model.addAttribute("message", "You are now owner do delete this chat");
+            return "index.html";
+        }
+
+        chatService.delete(chat.getId().intValue());
+        return "redirect:/chats/my";
     }
 
     @PostMapping
@@ -91,6 +120,7 @@ public class ChatController {
             redirectAttributes.addAttribute("entity", chat);
             return "chatEdit.html";
         } else {
+            chat.setOwner(user);
             current = chatService.update(chat);
             user.getChats().add(current);
             userService.update(user);
